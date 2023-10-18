@@ -25,32 +25,20 @@ export default function App() {
 }
 
 function Accordion({ data }) {
-  const [curOpen, setCurOpen] = useState(null);
   return (
     <div className="accordion">
       {data.map((el, i) => (
-        <AccordionItem
-          curOpen={curOpen}
-          onOpen={setCurOpen}
-          title={el.title}
-          num={i}
-          key={el.title}
-        >
-          {el.text}
-        </AccordionItem>
+        <AccordionItem title={el.title} text={el.text} num={i} key={el.title} />
       ))}
     </div>
   );
 }
 
-function AccordionItem({ num, title, curOpen, onOpen, children }) {
-  // This is incredibly hard to understand, but basically this is the code that checks to
-  // confirm which of the indexes is currently open, and thereby closes the others:
-  // "The const isOpen is equal to num if the number is equal to the currently open one"
-  const isOpen = num === curOpen;
+function AccordionItem({ num, title, text }) {
+  const [isOpen, setIsOpen] = useState(false);
 
   function handleToggle() {
-    onOpen(isOpen ? null : num);
+    setIsOpen(!isOpen);
   }
 
   return (
@@ -59,7 +47,7 @@ function AccordionItem({ num, title, curOpen, onOpen, children }) {
       <p className="title">{title}</p>
       <p className="icon">{isOpen ? "-" : "+"}</p>
 
-      {isOpen && <div className="content-box">{children}</div>}
+      {isOpen && <div className="content-box">{text}</div>}
     </div>
   );
 }
